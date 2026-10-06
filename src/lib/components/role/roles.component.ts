@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit, AfterViewInit, OnDestroy, effect, inject } from '@angular/core';
-import { ListingControlsComponent, ENTITY_CONSTRUCTOR, RequestType, AppDatatableComponent, SearchPanelComponent } from '@cartesianui/common';
+import { ListingControlsComponent, ENTITY_CONSTRUCTOR, RequestType, AppDatatableComponent, SearchPanelComponent } from '@cartesianui/platform-common';
 import { AuthorizationSandbox } from '../../authorization.sandbox';
 import { IRole, Role } from '../../models';
 import { LISTING_IMPORTS } from '../../authorization.imports';

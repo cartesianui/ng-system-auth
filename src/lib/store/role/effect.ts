@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of, switchMap, map, catchError } from 'rxjs';
-import { EntityEffect } from '@cartesianui/common';
-import { ICartesianResponse } from '@cartesianui/core';
+import { EntityEffect } from '@cartesianui/platform-common';
+import { ICartesianResponse } from '@cartesianui/platform-core';
 import { RoleActions } from './actions';
 import { Role } from '../../models';
 import { RoleHttpService, IRoleHttpServiceExtension } from '../../shared/role/http.service';

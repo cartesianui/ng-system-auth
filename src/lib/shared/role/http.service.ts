@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { IHttpService, HttpService, POST, GET, Body, Criteria, DefaultHeaders, RequestCriteriaOuput, Path, Query, DELETE, PUT, ICartesianResponse } from '@cartesianui/core';
+import { IHttpService, HttpService, POST, GET, Body, Criteria, DefaultHeaders, RequestCriteriaOuput, Path, Query, DELETE, PUT, ICartesianResponse } from '@cartesianui/platform-core';
 import { Role, RolePermissions } from '../../models';
 
 export type IRoleHttpServiceExtension = {

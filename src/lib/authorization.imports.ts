@@ -21,8 +21,8 @@ import {
 import { BadgeModule } from '@coreui/angular';
 
 // Cartesian UI modules
-import { CommonModule as CartesianCommonModule } from '@cartesianui/common';
-import { ShellModule } from '@cartesianui/coreui';
+import { CommonModule as CartesianCommonModule } from '@cartesianui/platform-common';
+import { ShellModule } from '@cartesianui/platform-coreui';
 
 /**
  * 🧩 Core shared imports

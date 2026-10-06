@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, effect, inject } from '@angular/core';
-import { ENTITY_CONSTRUCTOR, FormBaseComponent, RequestType } from '@cartesianui/common';
+import { ENTITY_CONSTRUCTOR, FormBaseComponent, RequestType } from '@cartesianui/platform-common';
 import { AuthorizationSandbox } from '../../../authorization.sandbox';
 import { Role } from '../../../models';
 import { FORM_IMPORTS } from '../../../authorization.imports';

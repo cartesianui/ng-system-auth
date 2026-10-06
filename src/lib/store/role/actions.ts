@@ -1,4 +1,4 @@
-import { entityActions } from '@cartesianui/common';
+import { entityActions } from '@cartesianui/platform-common';
 import { createAction, props } from '@ngrx/store';
 import { Role, RolePermissions } from '../../models';
 

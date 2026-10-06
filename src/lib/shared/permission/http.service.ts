@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { IHttpService, HttpService, GET, Criteria, DefaultHeaders, RequestCriteriaOuput, Path, Query } from '@cartesianui/core';
+import { IHttpService, HttpService, GET, Criteria, DefaultHeaders, RequestCriteriaOuput, Path, Query } from '@cartesianui/platform-core';
 import { Permission } from '../../models';
 
 @Injectable()

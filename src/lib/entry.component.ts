@@ -1,7 +1,7 @@
 import { Component, Injector } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
-import { BaseComponent } from '@cartesianui/common';
+import { BaseComponent } from '@cartesianui/platform-common';
 
 @Component({
     selector: 'app-authorization',
