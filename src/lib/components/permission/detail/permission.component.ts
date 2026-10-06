@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Signal, inject } from '@angular/core';
-import { BaseComponent } from '@cartesianui/common';
+import { BaseComponent } from '@cartesianui/platform-common';
 import { AuthorizationSandbox } from '../../../authorization.sandbox';
 import { Permission } from '../../../models';
 import { FORM_IMPORTS } from '../../../authorization.imports';

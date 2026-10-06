@@ -1,4 +1,4 @@
-import { BaseModel, EntityMeta } from '@cartesianui/common';
+import { BaseModel, EntityMeta } from '@cartesianui/platform-common';
 
 interface IRolePermissions {
   id?: string | undefined;

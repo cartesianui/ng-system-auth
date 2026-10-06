@@ -1,5 +1,5 @@
 import { Component, inject, Injector, Input, OnInit } from '@angular/core';
-import { ListingControlsComponent } from '@cartesianui/common';
+import { ListingControlsComponent } from '@cartesianui/platform-common';
 import { AuthorizationSandbox } from '../../authorization.sandbox';
 import { Permission } from '../../models';
 import { FORM_IMPORTS } from '../../authorization.imports';

@@ -1,4 +1,4 @@
-import { BaseModel, EntityMeta } from '@cartesianui/common';
+import { BaseModel, EntityMeta } from '@cartesianui/platform-common';
 
 export interface IPermission {
   id: string | undefined;

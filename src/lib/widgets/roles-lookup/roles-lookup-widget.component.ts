@@ -1,8 +1,8 @@
 import { Component, OnInit, signal, forwardRef, inject, OnDestroy, input } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { RequestCriteria, RequestCriteriaFactory } from '@cartesianui/core';
-import { SelectableControlComponent } from '@cartesianui/common';
+import { RequestCriteria, RequestCriteriaFactory } from '@cartesianui/platform-core';
+import { SelectableControlComponent } from '@cartesianui/platform-common';
 import { AuthorizationSandbox } from '../../authorization.sandbox';
 import { Role } from '../../models';
 import { FORM_IMPORTS } from '../../authorization.imports';

@@ -1,5 +1,5 @@
 import { Component, Injector } from '@angular/core';
-import { ListingControlsComponent } from '@cartesianui/common';
+import { ListingControlsComponent } from '@cartesianui/platform-common';
 import { Permission } from '../../models';
 import { LISTING_IMPORTS } from '../../authorization.imports';
 

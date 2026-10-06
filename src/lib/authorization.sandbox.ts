@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { Sandbox, EntitySandbox } from '@cartesianui/common';
+import { Sandbox, EntitySandbox } from '@cartesianui/platform-common';
 import { Store } from '@ngrx/store';
 import { Role, RolePermissions, Permission } from './models';
 import { RoleActions, fromRole } from './store/role';

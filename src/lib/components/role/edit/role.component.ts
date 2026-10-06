@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Signal, OnDestroy, effect, inject } from '@angular/core';
-import { BaseComponent, RequestType } from '@cartesianui/common';
+import { BaseComponent, RequestType } from '@cartesianui/platform-common';
 import { FormControl, FormGroup } from '@angular/forms';
-import { RequestCriteria } from '@cartesianui/core';
+import { RequestCriteria } from '@cartesianui/platform-core';
 import { AuthorizationSandbox } from '../../../authorization.sandbox';
 import { Permission, Role, RolePermissions } from '../../../models';
 import { FORM_IMPORTS } from '../../../authorization.imports';
