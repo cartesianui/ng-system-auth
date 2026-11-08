@@ -1,0 +1,43 @@
+<div class="card mt-2">
+  <div class="card-header">
+    <strong>Report access</strong>
+  </div>
+  <div class="card-body">
+    <p class="small text-muted mb-3">Applies when Settings → Tenant → Reports → Report access is set to “By section, through roles”.</p>
+    @if (isTenantAdmin()) {
+      <p class="mb-0">Tenant admins can run every report, so there is nothing to set here.</p>
+    } @else if (!loaded()) {
+      <p class="text-muted mb-0">Loading report sections…</p>
+    } @else if (!sections().length) {
+      <p class="text-muted mb-0">No report sections found.</p>
+    } @else {
+      <div class="row g-2">
+        @for (section of sections(); track section.permission.id) {
+          <div class="col-sm-6 col-lg-4">
+            <div class="form-check">
+              <input
+                type="checkbox"
+                class="form-check-input"
+                [id]="'report-section-' + section.permission.id"
+                [checked]="ticked().has(section.permission.id)"
+                (change)="toggle(section.permission.id, $any($event.target).checked)"
+              />
+              <label class="form-check-label" [for]="'report-section-' + section.permission.id" [title]="section.permission.name">
+                {{ section.label }}
+              </label>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  </div>
+  @if (!isTenantAdmin() && sections().length) {
+    <!-- Save lives with the section it commits, as on the configuration cards. -->
+    <div class="card-footer bg-transparent border-top d-flex justify-content-end">
+      <button type="button" class="btn btn-sm btn-primary d-flex align-items-center gap-1" [disabled]="!dirty()" (click)="save()">
+        <i class="fa fa-save"></i>
+        <span>Save</span>
+      </button>
+    </div>
+  }
+</div>

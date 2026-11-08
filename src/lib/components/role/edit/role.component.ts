@@ -6,6 +6,7 @@ import { AuthorizationSandbox } from '../../../authorization.sandbox';
 import { Permission, Role, RolePermissions } from '../../../models';
 import { FORM_IMPORTS } from '../../../authorization.imports';
 import { PermissionsWidgetComponent } from '../../../widgets';
+import { RoleReportAccessComponent } from '../report-access/role-report-access.component';
 
 @Component({
     selector: 'auth-edit-role',
@@ -14,6 +15,7 @@ import { PermissionsWidgetComponent } from '../../../widgets';
     imports: [
       ...FORM_IMPORTS,
       PermissionsWidgetComponent,
+      RoleReportAccessComponent,
     ],
     standalone: true
 })
@@ -27,6 +29,9 @@ export class RoleComponent extends BaseComponent implements OnDestroy {
   permissionLookupOptions: Signal<Permission[]> = this.sb.permission.entities;
 
   permissionCriteria = new RequestCriteria().limit(500);
+
+  /** Same rule as the BE give/revoke gate (`PermissionPolicy::canEditRoleGrants`). */
+  readonly canEditRoleGrants = this.permissionCheckerService.isAnyGranted(['manage:role', 'update:role']);
 
   formGroup: FormGroup = new FormGroup({
     name: new FormControl('', []),
