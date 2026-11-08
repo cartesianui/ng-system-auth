@@ -60,6 +60,7 @@
             <permissions-list [rows]="role()?.permissions?.data" [(selected)]="permissionsToRevoke"></permissions-list>
           </div>
         </div>
+        <auth-role-report-access *ngIf="canEditRoleGrants" [role]="role()"></auth-role-report-access>
       </div>
     </div>
   </form>
