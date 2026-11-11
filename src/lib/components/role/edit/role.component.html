@@ -1,13 +1,16 @@
 <default-actions
   (save)="onSave()"
-  (attach)="onAttach()"
-  (revoke)="onRevoke()"
   [disabled]="{
-    save: formGroup.invalid || !formGroup.dirty,
-    attach: permissionsToAttach?.length < 1,
-    revoke: permissionsToRevoke?.length < 1
+    save: formGroup.invalid || !formGroup.dirty
   }"
 >
+  <!-- Attach sends what is picked in Attach Permissions; Revoke sends what is ticked in Current Permissions. -->
+  <action-menu-item icon="fa-solid fa-link" [disabled]="permissionsToAttach?.length < 1" (select)="onAttach()">
+    Attach
+  </action-menu-item>
+  <action-menu-item icon="fa-solid fa-ban" [disabled]="permissionsToRevoke?.length < 1" (select)="onRevoke()">
+    Revoke
+  </action-menu-item>
   <action-menu-item *ngIf="canCloneRole && role()?.id" icon="fa-solid fa-clone" (select)="openCloneDialog()">
     Clone&hellip;
   </action-menu-item>
@@ -102,7 +105,7 @@
             } @else if (!permissionGroups().length) {
               <p class="text-muted mb-0">No permissions match “{{ permissionFilter() }}”.</p>
             } @else {
-              <p class="small text-muted mb-2">Tick the permissions to take away, then Revoke.</p>
+              <p class="small text-muted mb-2">Tick the permissions to take away, then Actions → Revoke.</p>
               <div class="row row-cols-1 row-cols-sm-2 row-cols-xl-3 g-2">
                 @for (group of permissionGroups(); track group.resource) {
                   <div class="col">
