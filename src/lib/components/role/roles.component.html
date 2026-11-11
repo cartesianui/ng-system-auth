@@ -7,14 +7,7 @@
   }"
 ></page-actions>
 
-<!-- Edit holds the role fields, its permissions and Report access side by side, so it gets the room; Create keeps the default width. -->
-<app-offcanvas
-  id="role-forms"
-  [title]="childComponentSelected && childComponentSelected?.title"
-  [width]="isComponentSelected(childComponents.editRole) ? 'min(1280px, 95vw)' : undefined"
-  [visible]="childSelected"
-  (visibleChange)="hideChildComponent($event)"
->
+<app-offcanvas id="role-forms" [title]="childComponentSelected && childComponentSelected?.title" [visible]="childSelected" (visibleChange)="hideChildComponent($event)">
   <auth-create-role *ngIf="isComponentSelected(childComponents.createRole)" (created)="onCreated()" />
   <auth-edit-role *ngIf="isComponentSelected(childComponents.editRole)" />
 </app-offcanvas>
