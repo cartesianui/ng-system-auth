@@ -5,9 +5,17 @@ import { RequestCriteria } from '@cartesianui/platform-core';
 import { AuthorizationSandbox } from '../../../authorization.sandbox';
 import { Permission, Role, RoleCloneSkip, RolePermissions } from '../../../models';
 import { FORM_IMPORTS } from '../../../authorization.imports';
-import { PermissionsWidgetComponent } from '../../../widgets';
 import { RoleReportAccessComponent } from '../report-access/role-report-access.component';
 import { CloneRoleComponent, RoleCloned } from '../clone/clone-role.component';
+
+/** The role's permissions on one resource: `read:role` and `update:role` both sit under `role`. */
+interface PermissionGroup {
+  resource: string;
+  permissions: { permission: Permission; action: string }[];
+}
+
+/** Permissions without an `action:resource` name. */
+const OTHER_GROUP = 'other';
 
 @Component({
     selector: 'auth-edit-role',
@@ -15,7 +23,6 @@ import { CloneRoleComponent, RoleCloned } from '../clone/clone-role.component';
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
       ...FORM_IMPORTS,
-      PermissionsWidgetComponent,
       RoleReportAccessComponent,
       CloneRoleComponent,
     ],
@@ -56,6 +63,32 @@ export class RoleComponent extends BaseComponent implements OnDestroy {
   protected readonly cloneSkipped = computed(() => {
     const clone = this.lastClone();
     return clone && clone.roleId === this.role()?.id ? clone : null;
+  });
+
+  /** Text typed in the Current Permissions filter box. */
+  protected readonly permissionFilter = signal('');
+
+  /** The role's permissions grouped by resource, both sorted by name, narrowed by the filter. */
+  protected readonly permissionGroups = computed<PermissionGroup[]>(() => {
+    const filter = this.permissionFilter().trim().toLowerCase();
+    const permissions: Permission[] = this.role()?.permissions?.data ?? [];
+    const groups = new Map<string, PermissionGroup>();
+
+    for (const permission of permissions) {
+      const name = permission?.name ?? '';
+      const text = `${name} ${permission?.displayName ?? ''} ${permission?.description ?? ''}`.toLowerCase();
+      if (filter && !text.includes(filter)) continue;
+
+      const separator = name.indexOf(':');
+      const resource = separator > 0 ? name.slice(separator + 1) : OTHER_GROUP;
+      const action = separator > 0 ? name.slice(0, separator) : name;
+      if (!groups.has(resource)) groups.set(resource, { resource, permissions: [] });
+      groups.get(resource).permissions.push({ permission, action });
+    }
+
+    return [...groups.values()]
+      .sort((a, b) => a.resource.localeCompare(b.resource))
+      .map((group) => ({ ...group, permissions: group.permissions.sort((a, b) => a.action.localeCompare(b.action)) }));
   });
 
   formGroup: FormGroup = new FormGroup({
@@ -110,6 +143,24 @@ export class RoleComponent extends BaseComponent implements OnDestroy {
 
   protected skippedDetails(skipped: RoleCloneSkip[]): string[] {
     return skipped.map((skip) => `${skip.displayName ? `${skip.displayName} (${skip.name})` : skip.name}: ${skip.reason}`);
+  }
+
+  protected isMarkedForRevoke(permission: Permission): boolean {
+    return this.permissionsToRevoke.some((marked) => marked.id === permission.id);
+  }
+
+  /** Ticks or unticks one permission for Revoke; the list Revoke sends, as the table's checkboxes did. */
+  protected markForRevoke(permission: Permission, marked: boolean) {
+    const others = this.permissionsToRevoke.filter((p) => p.id !== permission.id);
+    this.permissionsToRevoke = marked ? [...others, permission] : others;
+  }
+
+  protected isGroupMarkedForRevoke(group: PermissionGroup): boolean {
+    return group.permissions.every(({ permission }) => this.isMarkedForRevoke(permission));
+  }
+
+  protected markGroupForRevoke(group: PermissionGroup, marked: boolean) {
+    group.permissions.forEach(({ permission }) => this.markForRevoke(permission, marked));
   }
 
   onSave() {
