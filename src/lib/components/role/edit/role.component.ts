@@ -47,7 +47,12 @@ export class RoleComponent extends BaseComponent implements OnDestroy {
    * and the give gate above to copy the permissions onto it. Without the second the copy step
    * would be refused outright and leave an empty role behind.
    */
-  readonly canCloneRole = this.permissionCheckerService.isGranted('create:role') && this.canEditRoleGrants;
+  // ⚠ 2026-11-11: `RolePolicy::create` lets a super admin or a TENANT ADMIN create without holding `create:role`, and
+  // the tenant-admin role holds `manage:role` but not `create:role`, so this asked for a permission the admin never
+  // has and hid Clone from them. The admin flags mirror the server's rule; the explicit permission covers delegated roles.
+  readonly canCloneRole =
+    (this.appSession.isHostAdmin || this.appSession.isTenantAdmin || this.permissionCheckerService.isGranted('create:role'))
+    && this.canEditRoleGrants;
 
   protected readonly cloneDialogOpen = signal(false);
 
