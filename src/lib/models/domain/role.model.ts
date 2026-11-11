@@ -20,6 +20,8 @@ export interface IRole {
       key: 'name',
       label: 'Role',
       opt: {
+        // ~20 / 80 with Description: the datatable runs columnMode 'force', which shares the row by these widths.
+        width: '200',
         link: true,
         formatter: {
           type: 'multiline',
@@ -32,7 +34,7 @@ export interface IRole {
       }
     },
     // Wraps inside the cell instead of being cut off; the listing sets `rowHeight` to 'auto' for it.
-    { key: 'description', label: 'Description', opt: { formatter: { displayAs: 'text', class: 'text-wrap' } } },
+    { key: 'description', label: 'Description', opt: { width: '800', formatter: { displayAs: 'text', class: 'text-wrap' } } },
   ],
   form: [
     { key: 'name', label: 'Name', opt: { validators: [Validators.required, Validators.maxLength(255)] } },
