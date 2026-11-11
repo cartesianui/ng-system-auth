@@ -24,6 +24,7 @@
         [offset]="getOffsetFromPagination()"
         [limit]="sb.role.pagination()?.perPage"
         [selected]="selected"
+        [rowHeight]="'auto'"
         (selectChange)="onSelect($event)"
         (pageChange)="setPage($event)"
         (editClick)="edit($event)"
