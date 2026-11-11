@@ -84,66 +84,11 @@
     <div class="row g-2 mt-0">
       <div class="col-lg-8">
         <div class="card mt-2">
-          <div class="card-header d-flex flex-wrap align-items-center gap-2">
+          <div class="card-header">
             <strong>Current Permissions</strong>
-            <span class="badge bg-secondary">{{ role()?.permissions?.data?.length ?? 0 }} assigned</span>
-            @if (permissionsToRevoke.length) {
-              <span class="badge bg-danger">{{ permissionsToRevoke.length }} to revoke</span>
-            }
-            <input
-              type="search"
-              class="form-control form-control-sm ms-auto w-auto"
-              placeholder="Filter permissions"
-              aria-label="Filter permissions"
-              [value]="permissionFilter()"
-              (input)="permissionFilter.set($any($event.target).value)"
-            />
           </div>
           <div class="card-body">
-            @if (!role()?.permissions?.data?.length) {
-              <p class="text-muted mb-0">This role has no permissions yet. Attach some from the list beside.</p>
-            } @else if (!permissionGroups().length) {
-              <p class="text-muted mb-0">No permissions match “{{ permissionFilter() }}”.</p>
-            } @else {
-              <p class="small text-muted mb-2">Tick the permissions to take away, then Actions → Revoke.</p>
-              <div class="row row-cols-1 row-cols-sm-2 row-cols-xl-3 g-2">
-                @for (group of permissionGroups(); track group.resource) {
-                  <div class="col">
-                    <div class="border rounded p-2 h-100">
-                      <div class="form-check border-bottom pb-1 mb-1">
-                        <input
-                          type="checkbox"
-                          class="form-check-input"
-                          [id]="'revoke-group-' + group.resource"
-                          [checked]="isGroupMarkedForRevoke(group)"
-                          (change)="markGroupForRevoke(group, $any($event.target).checked)"
-                        />
-                        <label class="form-check-label fw-semibold" [for]="'revoke-group-' + group.resource">{{ group.resource }}</label>
-                        <span class="badge bg-light text-dark float-end">{{ group.permissions.length }}</span>
-                      </div>
-                      @for (item of group.permissions; track item.permission.id) {
-                        <div class="form-check">
-                          <input
-                            type="checkbox"
-                            class="form-check-input"
-                            [id]="'revoke-' + item.permission.id"
-                            [checked]="isMarkedForRevoke(item.permission)"
-                            (change)="markForRevoke(item.permission, $any($event.target).checked)"
-                          />
-                          <label
-                            class="form-check-label"
-                            [for]="'revoke-' + item.permission.id"
-                            [title]="item.permission.name + (item.permission.description ? ' — ' + item.permission.description : '')"
-                          >
-                            {{ item.action }}
-                          </label>
-                        </div>
-                      }
-                    </div>
-                  </div>
-                }
-              </div>
-            }
+            <permissions-list [rows]="role()?.permissions?.data" [(selected)]="permissionsToRevoke"></permissions-list>
           </div>
         </div>
       </div>
