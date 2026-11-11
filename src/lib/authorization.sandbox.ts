@@ -1,9 +1,10 @@
 import { inject, Injectable } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { Sandbox, EntitySandbox } from '@cartesianui/platform-common';
-import { Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { Observable, map } from 'rxjs';
 import { RequestCriteria } from '@cartesianui/platform-core';
-import { Role, RolePermissions, Permission } from './models';
+import { Role, RoleCloneSkip, RolePermissions, Permission } from './models';
 import { PermissionHttpService } from './shared/permission/http.service';
 import { RoleActions, fromRole } from './store/role';
 import { PermissionActions, fromPermission } from './store/permission';
@@ -40,6 +41,22 @@ export class AuthorizationSandbox extends Sandbox {
   changePermissions(id: string, give: RolePermissions, revoke: RolePermissions): void {
     this.store.dispatch(RoleActions.changePermissions({ id, give, revoke }));
   }
+
+  /** Clone `sourceId` into the new role `form` (see `RoleEffects.clone$`). The source is only read. */
+  clone(sourceId: string, form: Role): void {
+    this.store.dispatch(RoleActions.clone({ sourceId, form }));
+  }
+
+  clearCloneState(): void {
+    this.store.dispatch(RoleActions.clearClone());
+  }
+
+  cloneState$ = this.store.pipe(select(fromRole.cloneRequest));
+  readonly cloneState = toSignal(this.cloneState$, { initialValue: undefined });
+
+  /** What the last completed clone could not give the new role, with the server's reason. */
+  cloneSkipped$ = this.store.pipe(select(fromRole.cloneSkipped));
+  readonly cloneSkipped = toSignal(this.cloneSkipped$, { initialValue: [] as RoleCloneSkip[] });
 
   /**
    * The report-section permissions, `read:{section}-reports` (pa-api Shared/Report, ADR-005):

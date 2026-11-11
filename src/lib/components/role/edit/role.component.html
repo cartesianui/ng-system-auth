@@ -7,7 +7,41 @@
     attach: permissionsToAttach?.length < 1,
     revoke: permissionsToRevoke?.length < 1
   }"
-></default-actions>
+>
+  <action-menu-item *ngIf="canCloneRole && role()?.id" icon="fa-solid fa-clone" (select)="openCloneDialog()">
+    Clone&hellip;
+  </action-menu-item>
+</default-actions>
+
+<app-offcanvas
+  id="role-clone"
+  title="Clone role"
+  [visible]="cloneDialogOpen()"
+  (visibleChange)="cloneDialogOpen.set($event)"
+>
+  <auth-clone-role
+    *ngIf="cloneDialogOpen() && cloneSource() as source"
+    [source]="source"
+    (cloned)="onCloned($event)"
+    (dismissed)="cloneDialogOpen.set(false)"
+  ></auth-clone-role>
+</app-offcanvas>
+
+<ng-container *ngIf="cloneSkipped() as clone">
+  <app-alert
+    *ngIf="clone.skipped.length; else clonedAll"
+    kind="warning"
+    icon="fa-solid fa-triangle-exclamation"
+    [title]="clone.skipped.length + ' permission(s) of ' + clone.sourceName + ' were not copied'"
+    [details]="skippedDetails(clone.skipped)"
+    display="expanded"
+  >
+    The new role was created with every other permission. The server refused each one below, for the reason given.
+  </app-alert>
+  <ng-template #clonedAll>
+    <app-alert kind="success" icon="fa-solid fa-clone">Cloned from {{ clone.sourceName }} with all of its permissions.</app-alert>
+  </ng-template>
+</ng-container>
 <div class="main-content">
   <form novalidate autocomplete="off" [formGroup]="formGroup">
     <div class="row">
