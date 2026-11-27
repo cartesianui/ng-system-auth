@@ -1,17 +1,41 @@
 <div class="main-content dt" #dtContainer>
+  <div class="row g-2 align-items-center mb-2">
+    <div class="col-md-6">
+      <div class="input-group input-group-sm">
+        <span class="input-group-text"><i class="fa-solid fa-magnifying-glass"></i></span>
+        <input
+          type="search"
+          class="form-control"
+          placeholder="Filter by name or description"
+          aria-label="Filter permissions"
+          [value]="filterText"
+          (input)="onFilter($any($event.target).value)"
+        />
+      </div>
+    </div>
+    <div class="col-md-6 text-md-end">
+      <small class="text-body-secondary">
+        <ng-container *ngIf="filterText.trim()">{{ filteredRows.length }} of </ng-container>
+        {{ rows?.length || 0 }} {{ (rows?.length || 0) === 1 ? 'permission' : 'permissions' }}
+        <ng-container *ngIf="selected?.length"> &middot; {{ selected.length }} selected</ng-container>
+      </small>
+    </div>
+  </div>
   <div class="row">
     <div class="col-md-12">
       <ngx-datatable
         class="material"
-        [rows]="rows"
+        [rows]="filteredRows"
         [columns]="[{ name: 'name' }, { description: 'description' }]"
         [columnMode]="'force'"
         [headerHeight]="50"
         [footerHeight]="50"
         [rowHeight]="'auto'"
         [externalPaging]="false"
-        [count]="rows?.length"
-        [limit]="5"
+        [count]="filteredRows.length"
+        [limit]="pageSize"
+        [offset]="offset"
+        (page)="onPage($event)"
         [selectionType]="'checkbox'"
         [selected]="selected"
         (select)="onSelect($event)"

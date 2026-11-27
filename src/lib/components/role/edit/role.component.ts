@@ -30,7 +30,8 @@ export class RoleComponent extends BaseComponent implements OnDestroy {
   permissionsToRevoke: Permission[] = [];
   permissionLookupOptions: Signal<Permission[]> = this.sb.permission.entities;
 
-  permissionCriteria = new RequestCriteria().limit(500);
+  // 2026-11-27: was 500, below the 2,114 permissions the api guard has, so the rest were never offered. Same as permissions-lookup.
+  permissionCriteria = new RequestCriteria().limit(100000);
 
   /** Same rule as the BE give/revoke gate (`PermissionPolicy::canEditRoleGrants`). */
   readonly canEditRoleGrants = this.permissionCheckerService.isAnyGranted(['manage:role', 'update:role']);
